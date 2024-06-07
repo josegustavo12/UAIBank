@@ -13,6 +13,11 @@ User* users = NULL;
 int user_count = 0;
 int next_id = 1;
 
+struct trasnf{
+int idorigem, iddestino;
+float quantia;
+};
+
 void insercaounica(char* nome, int idade, int saldo_atual) {
 
     users = realloc(users, (user_count + 1) * sizeof(User));
@@ -33,12 +38,57 @@ void buscarid(int id) {
 }
 
 void transferencia(int id_origem, int id_destino, int quantia) {
+     int opc;
+    do{
+        printf ("Digite o Id de destino:\n");
+    scanf ("%d", &iddestino);
+    if (iddestino == NULL){
+        printf ("Id não existente. Digite um Id válido");
+    }
+    else {
+        printf ("Digite a quantia a ser transferida:\n");
+        scanf ("%f", &quantia);
+        if (saldo[Idorigem]<quantia){
+            printf ("Não foi possível realizar a transferencia. Saldo insuficiente.")
+        }
+        else {
+            saldo[IdOrigem]= saldoatual - quantia;
+            saldo [IdDestino] = saldoatual + quantia;
+            printf ("Transferencia realizada com sucesso.")
+            printf ("Deseja realizar outra transferencia? 1(SIM) 2(NAO)")
+        }
+     while (opc==1)
+           
+        }
+    }
 }
 
 void remocao(int id) {
 }
 
 int main() {
-
+    int opc;
+    do{
+        printf ("Digite o Id de destino:\n");
+    scanf ("%d", &iddestino);
+    if (iddestino == NULL){
+        printf ("Id não existente. Digite um Id válido");
+    }
+    else {
+        printf ("Digite a quantia a ser transferida:\n");
+        scanf ("%f", &quantia);
+        if (saldo[Idorigem]<quantia){
+            printf ("Não foi possível realizar a transferencia. Saldo insuficiente.")
+        }
+        else {
+            saldo[IdOrigem]= saldoatual - quantia;
+            saldo [IdDestino] = saldoatual + quantia;
+            printf ("Transferencia realizada com sucesso.")
+            printf ("Deseja realizar outra transferencia? 1(SIM) 2(NAO)")
+        }
+     while (opc==1)
+           
+        }
+    }
     return 0;
 }
