@@ -29,7 +29,7 @@ void insercaovarios(int qnt_usuarios, char* nomes[], int idades[], int saldos[])
     }
 }
 
-User* buscarid(int id) {
+void buscarid(int id) {
 }
 
 void transferencia(int id_origem, int id_destino, int quantia) {
