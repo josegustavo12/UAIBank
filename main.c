@@ -113,11 +113,12 @@ int main() {
     int redo = 1;
 
     do{printf("Seja bem-vindo(a) ao UaiBank!\n");
-    printf("Por favor, selecione a opção desejada:");
-    printf("\n(1) Inserção de um novo usuário.\n(2) Inserção de varios usuários.\n(3) Busca de usuário por id.\n(4) Transferência entre usuários.\n(5)Remoção de um usuário.\n(6) Sair.");
-    scanf("%d", &opc);
-    menu(opc);
-    printf("Deseja realizar uma nova ação?\n(1) Sim\n(2) Não");
+        printf("Por favor, selecione a opção desejada:");
+        printf("\n(1) Inserção de um novo usuário.\n(2) Inserção de varios usuários.\n(3) Busca de usuário por id.\n(4) Transferência entre usuários.\n(5)Remoção de um usuário.\n(6) Sair.");
+        scanf("%d", &opc);
+        menu(opc);
+        printf("Deseja realizar uma nova ação?\n(1) Sim\n(2) Não");
+        scanf("%d", &redo);
     }while(redo==1);
     printf("Obrigado por utilizar o UaiBank!");
     return 0;
