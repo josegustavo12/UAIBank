@@ -19,8 +19,6 @@ float quantia;
 };
 
 void menu(int opc){
-    printf("\n(1) Inserção de um novo usuário.\n(2) Inserção de varios usuários.\n(3) Busca de usuário por id.\n(4) Transferência entre usuários.\n(5)Remoção de um usuário.\n(6) Sair.");
-    scanf("%d", &opc);
     switch (opc) {
         case 1:
             printf("Opção 1 selecionada: Inserção de um novo usuário.\n");
@@ -68,7 +66,18 @@ void insercaovarios(int qnt_usuarios, char* nomes[], int idades[], int saldos[])
     }
 }
 
-void buscarid(int id) {
+void buscarid(User *users) {
+    int id;
+    printf("Por favor, insira o id que deseja buscar: ");
+    scanf("%d", &id);
+    while (users->id != -1) {
+        if (users->id == id) {
+            printf("Usuário encontrado: %s, %d, %.2f\n", users->nome, users->idade, users->saldo_atual);
+            return;
+        }
+        users++;
+    }
+    printf("Usuário não encontrado\n");
 }
 
 void transferencia(int id_origem, int id_destino, int quantia) {
@@ -101,20 +110,15 @@ void remocao(int id) {
 }
 
 int main() {
-    int redo;
-    printf("Seja bem-vindo(a) ao UaiBank!\nPor favor, selecione a opção desejada:");
-    menu();
-    while(redo!=1 || redo!=2){
-        printf("Deseja realizar alguma nova ação?\n(1) Sim.\n(2) Não.\n");
-        scanf("%d", &redo");
-        printf("Por favor, insira uma opção válida");
-    }
-    if(redo==1){
-        menu();
-    }
-    else if(redo==2){
-        menu(6);
-    }
-    }
+    int redo = 1;
+
+    do{printf("Seja bem-vindo(a) ao UaiBank!\n");
+    printf("Por favor, selecione a opção desejada:");
+    printf("\n(1) Inserção de um novo usuário.\n(2) Inserção de varios usuários.\n(3) Busca de usuário por id.\n(4) Transferência entre usuários.\n(5)Remoção de um usuário.\n(6) Sair.");
+    scanf("%d", &opc);
+    menu(opc);
+    printf("Deseja realizar uma nova ação?\n(1) Sim\n(2) Não");
+    }while(redo==1);
+    printf("Obrigado por utilizar o UaiBank!");
     return 0;
 }
