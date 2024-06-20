@@ -44,8 +44,7 @@ void menu(int opc){
             printf("Obrigado por utilizar o UaiBank!\nSaindo...");
             break;
         default:
-            printf("Por favor, insira uma opção válida.\n");
-            menu();
+            printf("Opção inválida.\n");
             break;
     }
 }
