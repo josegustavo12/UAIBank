@@ -13,10 +13,10 @@ User* users = NULL; // declaração de um ponteiro para fazer a alocação de me
 int user_count = 0;
 int next_id = 1;
 
-struct trasnf{
-int idorigem, iddestino;
+typedef struct trasnf{
+int id_origem, id_destino;
 float quantia;
-};
+} transf;
 
 void menu(int opc){
     switch (opc) {
@@ -87,6 +87,34 @@ void buscarid(User *users) {
 void remocao(int id) {
 }
 
+void transf (){
+        int opc;
+    do{
+        printf ("Digite o Id de destino:\n");
+    scanf ("%d", &transf.id_destino);
+    if (id_destino == NULL){
+        printf ("Id não existente. Digite um Id válido");
+    }
+    else {
+        printf ("Digite a quantia a ser transferida:\n");
+        scanf ("%f", &transf.quantia);
+        if (Users[user_count].saldo_atual < transf.quantia){
+            printf ("Não foi possível realizar a transferencia. Saldo insuficiente.")
+        }
+        else {
+            Users[usar_count].saldo_atual= Users[usar_count].saldo_atual- transf.quantia;
+            saldo [id_destino] = saldoatual + quantia;
+            printf ("Transferencia realizada com sucesso.")
+            printf ("Deseja realizar outra transferencia? 1(SIM) 2(NAO)")
+        }
+     while (opc==1)
+
+        }
+    }
+}
+
+
+
 int main() {
     int redo = 1;
     int opc;
@@ -102,3 +130,4 @@ int main() {
     printf("\nObrigado por utilizar o UaiBank!!!");
     return 0;
 }
+
