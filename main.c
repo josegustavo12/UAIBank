@@ -7,16 +7,13 @@ typedef struct { // struct que guarda todos os usuarios
     char nome[100];
     int idade;
     int saldo_atual;
-} User;
+}User;
 
 User* users = NULL; // declaração de um ponteiro para fazer a alocação de memória, declara com null pq no momento ele não aponta para nada
 int user_count = 0;
 int next_id = 1;
 
-typedef struct trasnf{
-int id_origem, id_destino;
-float quantia;
-} transf;
+
 
 void menu(int opc){
     switch (opc) {
@@ -87,11 +84,21 @@ void buscarid(User *users) {
 void remocao(int id) {
 }
 
+typedef struct trasnf{
+int *id_origem, *id_destino;
+id_origem = &Users.id;
+id_destino = &Users.id;
+float quantia;
+} transf;
+
 void transf (){
         int opc;
     do{
         printf ("Digite o Id de destino:\n");
-    scanf ("%d", &transf.id_destino);
+        Users[
+
+        
+    //scanf ("%d", &transf.id_destino);
     if (id_destino == NULL){
         printf ("Id não existente. Digite um Id válido");
     }
@@ -103,7 +110,7 @@ void transf (){
         }
         else {
             Users[usar_count].saldo_atual= Users[usar_count].saldo_atual- transf.quantia;
-            saldo [id_destino] = saldoatual + quantia;
+            Users.saldo_atual [id_destino] = saldoatual + quantia;
             printf ("Transferencia realizada com sucesso.")
             printf ("Deseja realizar outra transferencia? 1(SIM) 2(NAO)")
         }
