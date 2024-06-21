@@ -14,8 +14,11 @@ int user_count = 0;
 int next_id = 1;
 
 
-
-void menu(int opc){
+void menu(){
+    int opc;
+    printf("\n(1) Inserção de um novo usuário.\n(2) Inserção de varios usuários.\n(3) Busca de usuário por id.\n(4) Transferência entre usuários.\n(5)Remoção de um usuário.\n(6) Sair.\n\n");
+    printf("Por favor, selecione a opção desejada: ");
+    scanf("%d", &opc);
     switch (opc) {
         case 1:
             printf("\nOpção 1 selecionada: Inserção de um novo usuário.\n");
@@ -41,7 +44,6 @@ void menu(int opc){
             break;
     }
 }
-
 void insercaounica() {
     char nome[100];
     int idade;
@@ -66,18 +68,11 @@ void insercaovarios() {
     }
 }
 
-void buscarid(User *users) {
+void buscarid() {
     int id;
     printf("Por favor, insira o id que deseja buscar: ");
     scanf("%d", &id);
-    while (users->id != -1) {
-        if (users->id == id) {
-            printf("Usuário encontrado: %s, %d, %.2f\n", users->nome, users->idade, users->saldo_atual);
-            return;
-        }
-        users++;
-    }
-    printf("Usuário não encontrado\n");
+    printf("Nome: %s, Idade: %d, Saldo atual: %f", users[id].nome, users[id].idade, users[id].saldo_atual);
 }
 
 
@@ -123,17 +118,14 @@ void transf (){
 
 
 int main() {
-    int redo = 1;
-    int opc;
-
-    do{printf("Seja bem-vindo(a) ao UaiBank!\n");
-        printf("Por favor, selecione a opção desejada:");
-        printf("\n(1) Inserção de um novo usuário.\n(2) Inserção de varios usuários.\n(3) Busca de usuário por id.\n(4) Transferência entre usuários.\n(5)Remoção de um usuário.\n(6) Sair.\n\n");
-        scanf("%d", &opc);
-        menu(opc);
-        printf("Deseja realizar uma nova ação?\n(1) Sim (2) Não\n\n");
-        scanf("%d", &redo);
-    }while(redo==1);
+    int nova;
+    printf("Seja bem-vindo(a) ao UaiBank!\n");
+    menu();
+    printf("abrir");
+    scanf("%d", &nova);
+    if(nova==1){
+        menu();
+    }
     printf("\nObrigado por utilizar o UaiBank!!!");
     return 0;
 }
