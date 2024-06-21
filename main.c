@@ -2,14 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct {
+typedef struct { // struct que guarda todos os usuarios
     int id;
     char nome[100];
     int idade;
     int saldo_atual;
 } User;
 
-User* users = NULL;
+User* users = NULL; // declaração de um ponteiro para fazer a alocação de memória, declara com null pq no momento ele não aponta para nada
 int user_count = 0;
 int next_id = 1;
 
@@ -50,7 +50,7 @@ void insercaounica() {
     int idade;
     float saldo_atual;
     printf("\nNome, Idade, Saldo atual:\n");
-    scanf("%s, %d, %f", &nome, &idade, &saldo_atual);
+    scanf("%s %d %f", nome, &idade, &saldo_atual);
     users = realloc(users, (user_count + 1) * sizeof(User));
     users[user_count].id = next_id++;
     strcpy(users[user_count].nome, nome);
@@ -60,9 +60,12 @@ void insercaounica() {
     printf("\n======================Inserção realizada com sucesso======================\n");
 }
 
-void insercaovarios(int qnt_usuarios, char* nomes[], int idades[], int saldos[]) {
-    for (int i = 0; i < qnt_usuarios; i++) {
-        insercaounica(nomes[i], idades[i], saldos[i]);
+void insercaovarios() {
+    int n;
+    printf("\nQuantos usuários deseja?\n");
+    scanf("%d", &n);
+    for (int i = 0; i < n; i++) {
+        insercaounica();
     }
 }
 
