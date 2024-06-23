@@ -70,11 +70,19 @@ void insercaovarios() {
 
 void buscarid() {
     int id;
-    printf("Por favor, insira o id que deseja buscar: ");
+    printf("\nInsira o ID do usuário que deseja buscar: ");
     scanf("%d", &id);
-    printf("Nome: %s, Idade: %d, Saldo atual: %f", users[id].nome, users[id].idade, users[id].saldo_atual);
+    int existe = 0;
+    for (int i = 0; i < user_count; i++) {
+        if (users[i].id == id) {
+            printf("\nUsuário encontrado: %s %d, %.2f",users[i].nome, users[i].idade, users[i].saldo_atual);
+            existe = 1;
+        }
+    }
+    if (!existe) {
+        printf("\nUsuário com ID %d não encontrado.\n", id);
+    }
 }
-
 
 void remocao(int id) {
 }
@@ -118,15 +126,26 @@ void transf (){
 
 
 int main() {
-    int nova;
+    int nova = 0;
     printf("Seja bem-vindo(a) ao UaiBank!\n");
     menu();
-    printf("abrir");
-    scanf("%d", &nova);
-    if(nova==1){
-        menu();
-    }
-    printf("\nObrigado por utilizar o UaiBank!!!");
+    do {
+        printf("\nDeseja realizar uma nova ação?\n(1)Sim (2)Não\n");
+        scanf("%d", &nova);
+        switch (nova) {
+            case 1:
+                menu();
+                break;
+            case 2:
+                break;
+            default:
+                printf("\nOpção inválida! Por favor, insira outra opção.\n");
+                break;
+        }
+    } while (nova != 2);
+
+    printf("\nObrigado por utilizar o UaiBank!!!\n");
+    printf("\nSaindo...");
     return 0;
 }
 
