@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 typedef struct {
@@ -7,13 +10,13 @@ typedef struct {
     char nome[100];
     int idade;
     float saldo;
-} cadastro;
+} cadastro; //struct para armazenar os dados de um usuário
 
 typedef struct {
     int id_origem;
     int id_destino;
     float quantia;
-} transf;
+} transf; // struct para armazenar as informações necessárias para uma transferência
 
 cadastro* usuarios = NULL; // ponteiro para armazenar os usuários
 int cont_usuarios = 0; // contador de usuário
@@ -27,7 +30,7 @@ void insercaounica() {
     printf("\nDigite o Nome, A idade e o Saldo: \n");
     scanf("%s %d %f", nome, &idade, &saldo);
 
-    usuarios = realloc(usuarios, (cont_usuarios + 1) * sizeof(cadastro));
+    usuarios = realloc(usuarios, (cont_usuarios + 1) * sizeof(cadastro)); // alocando  memória à variável usuarios conforme a inserção de novos usuários
 
     if (usuarios == NULL) {
         
@@ -35,13 +38,13 @@ void insercaounica() {
         exit(1);
     }
 
-    usuarios[cont_usuarios].id = prox_id;
-    strcpy(usuarios[cont_usuarios].nome, nome);
-    usuarios[cont_usuarios].idade = idade;
-    usuarios[cont_usuarios].saldo = saldo;
+    usuarios[cont_usuarios].id = prox_id; //atribuindo ID para os usuários
+    strcpy(usuarios[cont_usuarios].nome, nome); //armazenando o nome recebido pelo usuário na variável "usuários"
+    usuarios[cont_usuarios].idade = idade; // armazenando a idade recebida pelo usuário na variável "usuários"  
+    usuarios[cont_usuarios].saldo = saldo; // armazenando o saldo recebido pelo usuário na variável "usuários"
 
-    cont_usuarios++;
-    prox_id++;
+    cont_usuarios++; //adicionando um a contagem de usuários
+    prox_id++; //adicionando um ao ID do próximo usuário
 }
 
 void insercaovarios() {
@@ -50,7 +53,7 @@ void insercaovarios() {
     scanf("%d", &n);
     for (int i = 0; i < n; i++) {
         
-        insercaounica();
+        insercaounica();//chama a função inserção única
     }
 }
 
@@ -59,21 +62,21 @@ cadastro* buscarid(int id) {
         
         if (usuarios[i].id == id) {
             
-            return &usuarios[i];
+            return &usuarios[i]; //retorna todos os dados do usuário buscado
         }
     }
     return NULL;
 }
 
 void transferencia() {
-    transf t;
+    transf t; //declarando a variável "t" como sendo do tipo struct transf
     int opc;
 
     do {
         printf("Digite o Id de origem:\n");
-        scanf("%d", &t.id_origem);
+        scanf("%d", &t.id_origem); //armazenando o Id de Origem digitado na varíavel da struct de transferência
 
-        cadastro* origem = buscarid(t.id_origem);
+        cadastro* origem = buscarid(t.id_origem); //declarando e inicializando a variável "origem" ao chamar a função para ver se o Id informado de fato existe
 
         if (origem == NULL) {
             
@@ -100,13 +103,13 @@ void transferencia() {
 -> é utilizado para ponteiros para chamar na struct
 */
 
-        if (origem->saldo < t.quantia) {
+        if (origem->saldo < t.quantia) { //verificando se o saldo do Id de origem é suficiente para realizar a transferência
             
             printf("Não foi possível realizar a transferência. Saldo insuficiente.\n");
         } 
         else {
             
-            origem->saldo -= t.quantia;
+            origem->saldo -= t.quantia; 
             destino->saldo += t.quantia;
             printf("Transferência realizada com sucesso.\n");
         }
