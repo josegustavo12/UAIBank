@@ -121,29 +121,42 @@ void transferencia() {
 }
 
 void remocao(int id){
-    int num;
+    int num=-1;
     cadastro* remocao = buscarid(id);
-    for (int i = 0; i < cont_usuarios; i++) {
+     if (remocao == NULL) {
+        printf("Usuário não encontrado\n");
+        return;
+    }
 
+    // Encontra a posição do usuário no array
+    for (int i = 0; i < cont_usuarios; i++) {
         if (usuarios[i].id == id) {
-            num=i;
+            num = i;
+            break;
         }
     }
-    if(remocao==NULL){
-        printf("Usuário não encontrado");
-        return NULL;
-    }
-    else{
-        if (num >= 0 && num < cont_usuarios){ 
-        int i;
-        for (i = num;i < cont_usuarios - 1; ++i){
+
+    if (num != -1) { // Se o usuário foi encontrado
+        // Movendo todos os usuários após a posição num uma posição para trás
+        for (int i = num; i < cont_usuarios - 1; i++) {
             usuarios[i] = usuarios[i + 1];
         }
 
-        usuarios = realloc(usuarios, --num * sizeof(cadastro)); //reduzir o tamanho do array em 1 unidade
+        cont_usuarios--; // Decrementa o contador de usuários
+
+        // Realoca o array de usuários para o novo tamanho
+        usuarios = realloc(usuarios, cont_usuarios * sizeof(cadastro));
+
+        if (usuarios == NULL) {
+            fprintf(stderr, "Erro ao realocar memória.\n");
+            exit(1);
+        }
+
+        printf("Usuário removido com sucesso.\n");
+    } else {
+        printf("Erro ao remover usuário. Usuário não encontrado.\n");
     }
 }
-    }
 
 void salvarusuarios() {
     FILE *arquivo;
