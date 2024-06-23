@@ -120,9 +120,30 @@ void transferencia() {
     } while (opc == 1);
 }
 
-void remocao(){
-    
+void remocao(int id){
+    int num;
+    cadastro* remocao = buscarid(id);
+    for (int i = 0; i < cont_usuarios; i++) {
+
+        if (usuarios[i].id == id) {
+            num=i;
+        }
+    }
+    if(remocao==NULL){
+        printf("Usuário não encontrado");
+        return NULL;
+    }
+    else{
+        if (num >= 0 && num < cont_usuarios){ 
+        int i;
+        for (i = num;i < cont_usuarios - 1; ++i){
+            usuarios[i] = usuarios[i + 1];
+        }
+
+        usuarios = realloc(usuarios, --num * sizeof(cadastro)); //reduzir o tamanho do array em 1 unidade
+    }
 }
+    }
 
 void salvarusuarios() {
     FILE *arquivo;
