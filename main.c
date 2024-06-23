@@ -33,14 +33,14 @@ void insercaounica() {
     usuarios = realloc(usuarios, (cont_usuarios + 1) * sizeof(cadastro)); // alocando  memória à variável usuarios conforme a inserção de novos usuários
 
     if (usuarios == NULL) {
-        
+
         fprintf(stderr, "Erro ao alocar memória.\n");
         exit(1);
     }
 
     usuarios[cont_usuarios].id = prox_id; //atribuindo ID para os usuários
     strcpy(usuarios[cont_usuarios].nome, nome); //armazenando o nome recebido pelo usuário na variável "usuários"
-    usuarios[cont_usuarios].idade = idade; // armazenando a idade recebida pelo usuário na variável "usuários"  
+    usuarios[cont_usuarios].idade = idade; // armazenando a idade recebida pelo usuário na variável "usuários"
     usuarios[cont_usuarios].saldo = saldo; // armazenando o saldo recebido pelo usuário na variável "usuários"
 
     cont_usuarios++; //adicionando um a contagem de usuários
@@ -52,16 +52,16 @@ void insercaovarios() {
     printf("\nQuantos usuários deseja?\n");
     scanf("%d", &n);
     for (int i = 0; i < n; i++) {
-        
+
         insercaounica();//chama a função inserção única
     }
 }
 
 cadastro* buscarid(int id) {
     for (int i = 0; i < cont_usuarios; i++) {
-        
+
         if (usuarios[i].id == id) {
-            
+
             return &usuarios[i]; //retorna todos os dados do usuário buscado
         }
     }
@@ -71,88 +71,54 @@ cadastro* buscarid(int id) {
 void transferencia() {
     transf t; //declarando a variável "t" como sendo do tipo struct transf
     int opc;
+    FILE *arqtransf;
 
     do {
-        printf("Digite o Id de origem:\n");
-        scanf("%d", &t.id_origem); //armazenando o Id de Origem digitado na varíavel da struct de transferência
+        printf("\n\nDigite o Id de origem, o Id de Destino e a quantia que deseja transferir:\n");
+        scanf("%d %d %f", &t.id_origem, &t.id_destino, &t.quantia); //armazenando o Id de Origem digitado na varíavel da struct de transferência
 
         cadastro* origem = buscarid(t.id_origem); //declarando e inicializando a variável "origem" ao chamar a função para ver se o Id informado de fato existe
 
         if (origem == NULL) {
-            
+
             printf("Id de origem não existente. Digite um Id válido.\n");
             continue;
         }
 
-        printf("Digite o Id de destino:\n");
-        scanf("%d", &t.id_destino);
+
 
         cadastro* destino = buscarid(t.id_destino);
 
         if (destino == NULL) {
-            
+
             printf("Id de destino não existente. Digite um Id válido.\n");
             continue;
         }
-
-        printf("Digite a quantia a ser transferida:\n");
-        scanf("%f", &t.quantia);
-
 /*
 . é utilizado para variaveis diretas para chamar na struct
 -> é utilizado para ponteiros para chamar na struct
 */
 
         if (origem->saldo < t.quantia) { //verificando se o saldo do Id de origem é suficiente para realizar a transferência
-            
+
             printf("Não foi possível realizar a transferência. Saldo insuficiente.\n");
-        } 
+        }
         else {
-            
-            origem->saldo -= t.quantia; 
+
+            origem->saldo -= t.quantia;
             destino->saldo += t.quantia;
             printf("Transferência realizada com sucesso.\n");
-        }
-
+            arqtransf = fopen("arqtransf.txt", "a");
+            fprintf(arqtransf,"%s, %d, %s, %d, %.2f\n\n ",origem->nome, origem->id, destino->nome, destino->id, t.quantia);
+            fclose(arqtransf);
+            }
         printf("Deseja realizar outra transferência? 1(SIM) 2(NAO)\n");
         scanf("%d", &opc);
-
     } while (opc == 1);
 }
 
-void remocao(int id){
-    int num=-1;
-    cadastro* remocao = buscarid(id);
-     if (remocao == NULL) {
-        printf("Usuário não encontrado\n");
-        return;
-    }
+void remocao(){
 
-    // Encontra a posição do usuário no array
-    for (int i = 0; i < cont_usuarios; i++) {
-        if (usuarios[i].id == id) {
-            num = i;
-            break;
-        }
-    }
-
-    if (num != -1) {
-        for (int i = num; i < cont_usuarios - 1; i++) {
-            usuarios[i] = usuarios[i + 1];
-        }
-        cont_usuarios--;
-
-        usuarios = realloc(usuarios, cont_usuarios * sizeof(cadastro));
-
-        if (usuarios == NULL) {
-            fprintf(stderr, "\nErro ao realocar memória.\n");
-            exit(1);
-        }
-        printf("\nUsuário removido com sucesso.\n");
-    }
-    else {
-        printf("\nUsuário não encontrado.\n");
-    }
 }
 
 void salvarusuarios() {
@@ -160,13 +126,13 @@ void salvarusuarios() {
     arquivo = fopen("usuarios.txt", "w");
 
     if (arquivo == NULL) {
-        
+
         fprintf(stderr, "Erro ao abrir o arquivo usuarios.txt.\n");
         exit(1);
     }
 
     for (int i = 0; i < cont_usuarios; i++) {
-        
+
         fprintf(arquivo, "%d, %s, %d, %.2f\n", usuarios[i].id, usuarios[i].nome, usuarios[i].idade, usuarios[i].saldo);
     }
 
@@ -201,11 +167,13 @@ void menu() {
 
             cadastro* encontrado = buscarid(id); // cria um um ponteiro para a localização daquela struct
 
-            if (encontrado != NULL){
+            if (encontrado != NULL) {
+
                 printf("\nUsuário encontrado:\n");
     printf("%d, %s, %d, %.2f", encontrado->id, encontrado->nome, encontrado->idade, encontrado->saldo);
             }
             else {
+
                 printf("\nUsuário com ID %d não encontrado.\n", id);
             }
             break;
@@ -215,23 +183,14 @@ void menu() {
             printf("\nOpção 4 selecionada: Transferência entre usuários.\n");
             transferencia();
             break;
-
-
-
         case 5:
+
             printf("\nOpção 5 selecionada: Remoção de um usuário.\n");
-            int id;
-            printf("Digite o ID do usuário que deseja remover: ");
-            scanf("%d", &id);
-            remocao(id);
+            remocao();
             break;
-
-
         case 6:
 
             printf("\nSaindo...");
-            printf("\nObrigado por utilizar o UaiBank!!!\n");
-            exit(0);
             break;
         default:
 
@@ -251,11 +210,9 @@ int main() {
         printf("\nDeseja realizar outra ação? 1 [SIM] 2 [NÃO]\n");
         scanf("%d", &opc);
 
-    } while (opc != 2);
-
-    printf("\nObrigado por utilizar o UaiBank!!!\n");
-    salvarusuarios();
-    free(usuarios); // libera a memória alocada
-
+    } while (opc !=2 && opc==1);
+        printf("\nObrigado por utilizar o UaiBank!!!\n");
+        salvarusuarios();
+        free(usuarios); // libera a memória alocada
     return 0;
 }
