@@ -30,6 +30,7 @@ void insercaounica() {
     usuarios = realloc(usuarios, (cont_usuarios + 1) * sizeof(cadastro));
 
     if (usuarios == NULL) {
+        
         fprintf(stderr, "Erro ao alocar memória.\n");
         exit(1);
     }
@@ -48,13 +49,16 @@ void insercaovarios() {
     printf("\nQuantos usuários deseja?\n");
     scanf("%d", &n);
     for (int i = 0; i < n; i++) {
+        
         insercaounica();
     }
 }
 
 cadastro* buscarid(int id) {
     for (int i = 0; i < cont_usuarios; i++) {
+        
         if (usuarios[i].id == id) {
+            
             return &usuarios[i];
         }
     }
@@ -72,6 +76,7 @@ void transferencia() {
         cadastro* origem = buscarid(t.id_origem);
 
         if (origem == NULL) {
+            
             printf("Id de origem não existente. Digite um Id válido.\n");
             continue;
         }
@@ -82,6 +87,7 @@ void transferencia() {
         cadastro* destino = buscarid(t.id_destino);
 
         if (destino == NULL) {
+            
             printf("Id de destino não existente. Digite um Id válido.\n");
             continue;
         }
@@ -95,8 +101,11 @@ void transferencia() {
 */
 
         if (origem->saldo < t.quantia) {
+            
             printf("Não foi possível realizar a transferência. Saldo insuficiente.\n");
-        } else {
+        } 
+        else {
+            
             origem->saldo -= t.quantia;
             destino->saldo += t.quantia;
             printf("Transferência realizada com sucesso.\n");
@@ -117,11 +126,13 @@ void salvarusuarios() {
     arquivo = fopen("usuarios.txt", "w");
 
     if (arquivo == NULL) {
+        
         fprintf(stderr, "Erro ao abrir o arquivo usuarios.txt.\n");
         exit(1);
     }
 
     for (int i = 0; i < cont_usuarios; i++) {
+        
         fprintf(arquivo, "%d, %s, %d, %.2f\n", usuarios[i].id, usuarios[i].nome, usuarios[i].idade, usuarios[i].saldo);
     }
 
@@ -136,15 +147,19 @@ void menu() {
     scanf("%d", &opc);
     
     switch (opc) {
+        
         case 1:
             printf("\nOpção 1 selecionada: Inserção de um novo usuário.\n");
             insercaounica();
             break;
         case 2:
+            
             printf("\nOpção 2 selecionada: Inserção de varios usuários.\n");
             insercaovarios();
             break;
-        case 3: {
+        case 3: 
+            {
+            
             int id;
             printf("\nOpção 3 selecionada: Busca de usuário por id.\n");
             printf("Digite o ID do usuário que deseja buscar: ");
@@ -153,25 +168,32 @@ void menu() {
             cadastro* encontrado = buscarid(id); // cria um um ponteiro para a localização daquela struct
 
             if (encontrado != NULL) {
+                
                 printf("\nUsuário encontrado:\n");
     printf("%d, %s, %d, %.2f", encontrado->id, encontrado->nome, encontrado->idade, encontrado->saldo);
-            } else {
+            } 
+            else {
+                
                 printf("\nUsuário com ID %d não encontrado.\n", id);
             }
             break;
         }
         case 4:
+            
             printf("\nOpção 4 selecionada: Transferência entre usuários.\n");
             transferencia();
             break;
         case 5:
+            
             printf("\nOpção 5 selecionada: Remoção de um usuário.\n");
             remocao();
             break;
         case 6:
+            
             printf("\nSaindo...");
             break;
         default:
+            
             printf("\nOpção inválida.\n");
             break;
     }
