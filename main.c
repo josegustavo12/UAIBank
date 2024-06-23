@@ -136,25 +136,22 @@ void remocao(int id){
         }
     }
 
-    if (num != -1) { // Se o usuário foi encontrado
-        // Movendo todos os usuários após a posição num uma posição para trás
+    if (num != -1) {
         for (int i = num; i < cont_usuarios - 1; i++) {
             usuarios[i] = usuarios[i + 1];
         }
+        cont_usuarios--;
 
-        cont_usuarios--; // Decrementa o contador de usuários
-
-        // Realoca o array de usuários para o novo tamanho
         usuarios = realloc(usuarios, cont_usuarios * sizeof(cadastro));
 
         if (usuarios == NULL) {
-            fprintf(stderr, "Erro ao realocar memória.\n");
+            fprintf(stderr, "\nErro ao realocar memória.\n");
             exit(1);
         }
-
-        printf("Usuário removido com sucesso.\n");
-    } else {
-        printf("Erro ao remover usuário. Usuário não encontrado.\n");
+        printf("\nUsuário removido com sucesso.\n");
+    }
+    else {
+        printf("\nUsuário não encontrado.\n");
     }
 }
 
@@ -182,21 +179,21 @@ void menu() {
 
     printf("Por favor, selecione a opção desejada: ");
     scanf("%d", &opc);
-    
+
     switch (opc) {
-        
+
         case 1:
             printf("\nOpção 1 selecionada: Inserção de um novo usuário.\n");
             insercaounica();
             break;
         case 2:
-            
+
             printf("\nOpção 2 selecionada: Inserção de varios usuários.\n");
             insercaovarios();
             break;
-        case 3: 
+        case 3:
             {
-            
+
             int id;
             printf("\nOpção 3 selecionada: Busca de usuário por id.\n");
             printf("Digite o ID do usuário que deseja buscar: ");
@@ -204,33 +201,40 @@ void menu() {
 
             cadastro* encontrado = buscarid(id); // cria um um ponteiro para a localização daquela struct
 
-            if (encontrado != NULL) {
-                
+            if (encontrado != NULL){
                 printf("\nUsuário encontrado:\n");
     printf("%d, %s, %d, %.2f", encontrado->id, encontrado->nome, encontrado->idade, encontrado->saldo);
-            } 
+            }
             else {
-                
                 printf("\nUsuário com ID %d não encontrado.\n", id);
             }
             break;
         }
         case 4:
-            
+
             printf("\nOpção 4 selecionada: Transferência entre usuários.\n");
             transferencia();
             break;
+
+
+
         case 5:
-            
             printf("\nOpção 5 selecionada: Remoção de um usuário.\n");
-            remocao();
+            int id;
+            printf("Digite o ID do usuário que deseja remover: ");
+            scanf("%d", &id);
+            remocao(id);
             break;
+
+
         case 6:
-            
+
             printf("\nSaindo...");
+            printf("\nObrigado por utilizar o UaiBank!!!\n");
+            exit(0);
             break;
         default:
-            
+
             printf("\nOpção inválida.\n");
             break;
     }
