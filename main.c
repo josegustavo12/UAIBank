@@ -229,6 +229,7 @@ void menu() {
 }
 
 int main() {
+    setlocale(LC_ALL, "Portuguese");
     int opc = 0;
 
     printf("Seja bem-vindo(a) ao UaiBank!\n");
