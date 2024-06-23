@@ -89,6 +89,11 @@ void transferencia() {
         printf("Digite a quantia a ser transferida:\n");
         scanf("%f", &t.quantia);
 
+/*
+. é utilizado para variaveis diretas para chamar na struct
+-> é utilizado para ponteiros para chamar na struct
+*/
+
         if (origem->saldo < t.quantia) {
             printf("Não foi possível realizar a transferência. Saldo insuficiente.\n");
         } else {
