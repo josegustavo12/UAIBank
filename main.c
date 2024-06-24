@@ -3,22 +3,23 @@
 #include <string.h>
 #include <locale.h>
 
+
 typedef struct {
     int id;
     char nome[100];
     int idade;
     float saldo;
-} cadastro;
+} cadastro; //struct para armazenar os dados de um usuário
 
 typedef struct {
     int id_origem;
     int id_destino;
     float quantia;
-} transf;
+} transf; // struct para armazenar as informações necessárias para uma transferência
 
-cadastro* usuarios = NULL;
-int cont_usuarios = 0;
-int prox_id = 1;
+cadastro* usuarios = NULL; // ponteiro para armazenar os usuários
+int cont_usuarios = 0; // contador de usuário
+int prox_id = 1; // próximo ID a ser atribuído
 
 void insercaounica() {
     int idade;
@@ -26,22 +27,23 @@ void insercaounica() {
     char nome[100];
 
     printf("\nDigite o Nome, A idade e o Saldo: \n");
-    scanf("%99s %d %f", nome, &idade, &saldo);
+    scanf(" %99[^,], %d, %f", nome, &idade, &saldo);
 
-    cadastro* novo_usuarios = realloc(usuarios, (cont_usuarios + 1) * sizeof(cadastro));
-    if (novo_usuarios == NULL) {
+    usuarios = realloc(usuarios, (cont_usuarios + 1) * sizeof(cadastro)); // alocando  memória à variável usuarios conforme a inserção de novos usuários
+
+    if (usuarios == NULL) {
+
         fprintf(stderr, "Erro ao alocar memória.\n");
         exit(1);
     }
-    usuarios = novo_usuarios;
 
-    usuarios[cont_usuarios].id = prox_id;
-    strcpy(usuarios[cont_usuarios].nome, nome);
-    usuarios[cont_usuarios].idade = idade;
-    usuarios[cont_usuarios].saldo = saldo;
+    usuarios[cont_usuarios].id = prox_id; //atribuindo ID para os usuários
+    strcpy(usuarios[cont_usuarios].nome, nome); //armazenando o nome recebido pelo usuário na variável "usuários"
+    usuarios[cont_usuarios].idade = idade; // armazenando a idade recebida pelo usuário na variável "usuários"
+    usuarios[cont_usuarios].saldo = saldo; // armazenando o saldo recebido pelo usuário na variável "usuários"
 
-    cont_usuarios++;
-    prox_id++;
+    cont_usuarios++; //adicionando um a contagem de usuários
+    prox_id++; //adicionando um ao ID do próximo usuário
 }
 
 void insercaovarios() {
@@ -49,68 +51,80 @@ void insercaovarios() {
     printf("\nQuantos usuários deseja?\n");
     scanf("%d", &n);
     for (int i = 0; i < n; i++) {
-        insercaounica();
+
+        insercaounica();//chama a função inserção única
     }
 }
 
 cadastro* buscarid(int id) {
     for (int i = 0; i < cont_usuarios; i++) {
+
         if (usuarios[i].id == id) {
-            return &usuarios[i];
+
+            return &usuarios[i]; //retorna todos os dados do usuário buscado
         }
     }
     return NULL;
 }
 
 void transferencia() {
-    transf t;
+    transf t; //declarando a variável "t" como sendo do tipo struct transf
     int opc;
     FILE *arqtransf;
 
     do {
         printf("\n\nDigite o Id de origem, o Id de Destino e a quantia que deseja transferir:\n");
-        scanf("%d %d %f", &t.id_origem, &t.id_destino, &t.quantia);
+        scanf("%d %d %f", &t.id_origem, &t.id_destino, &t.quantia); //armazenando o Id de Origem digitado na varíavel da struct de transferência
 
-        cadastro* origem = buscarid(t.id_origem);
+        cadastro* origem = buscarid(t.id_origem); //declarando e inicializando a variável "origem" ao chamar a função para ver se o Id informado de fato existe
+
         if (origem == NULL) {
+
             printf("Id de origem não existente. Digite um Id válido.\n");
             continue;
         }
 
+
+
         cadastro* destino = buscarid(t.id_destino);
+
         if (destino == NULL) {
+
             printf("Id de destino não existente. Digite um Id válido.\n");
             continue;
         }
+/*
+. é utilizado para variaveis diretas para chamar na struct
+-> é utilizado para ponteiros para chamar na struct
+*/
 
-        if (origem->saldo < t.quantia) {
+        if (origem->saldo < t.quantia) { //verificando se o saldo do Id de origem é suficiente para realizar a transferência
+
             printf("Não foi possível realizar a transferência. Saldo insuficiente.\n");
-        } else {
+        }
+        else {
+
             origem->saldo -= t.quantia;
             destino->saldo += t.quantia;
             printf("Transferência realizada com sucesso.\n");
             arqtransf = fopen("arqtransf.txt", "a");
-            if (arqtransf != NULL) {
-                fprintf(arqtransf, "%s, %d, %s, %d, %.2f\n", origem->nome, origem->id, destino->nome, destino->id, t.quantia);
-                fclose(arqtransf);
-            } else {
-                printf("Erro ao abrir o arquivo de transferência.\n");
+            fprintf(arqtransf,"%s, %d, %s, %d, %.2f\n\n ",origem->nome, origem->id, destino->nome, destino->id, t.quantia);
+            fclose(arqtransf);
             }
-        }
-
         printf("Deseja realizar outra transferência? 1(SIM) 2(NAO)\n");
         scanf("%d", &opc);
     } while (opc == 1);
 }
 
-void remocao(int id) {
-    int num = -1;
+void remocao(int id){
+    int num=-1;
     cadastro* remocao = buscarid(id);
-    if (remocao == NULL) {
+     if (remocao == NULL) {
         printf("Usuário não encontrado\n");
         return;
     }
 
+    // Encontra a posição do usuário no array
     for (int i = 0; i < cont_usuarios; i++) {
         if (usuarios[i].id == id) {
             num = i;
@@ -124,59 +138,66 @@ void remocao(int id) {
         }
         cont_usuarios--;
 
-        cadastro* novo_usuarios = realloc(usuarios, cont_usuarios * sizeof(cadastro));
-        if (novo_usuarios == NULL && cont_usuarios > 0) {
+        usuarios = realloc(usuarios, cont_usuarios * sizeof(cadastro));
+
+        if (usuarios == NULL) {
             fprintf(stderr, "\nErro ao realocar memória.\n");
             exit(1);
         }
-        usuarios = novo_usuarios;
-
         printf("\nUsuário removido com sucesso.\n");
-    } else {
+    }
+    else {
         printf("\nUsuário não encontrado.\n");
     }
 }
 
 void salvarusuarios() {
-    FILE *arquivo = fopen("usuarios.txt", "w");
+    FILE *arquivo;
+    arquivo = fopen("usuarios.txt", "w"); // abre o arquivo txt sempre no modo w pq ele reescreve toda vez
+
     if (arquivo == NULL) {
+
         fprintf(stderr, "Erro ao abrir o arquivo usuarios.txt.\n");
         exit(1);
     }
-
     for (int i = 0; i < cont_usuarios; i++) {
-        fprintf(arquivo, "%d, %s, %d, %.2f\n", usuarios[i].id, usuarios[i].nome, usuarios[i].idade, usuarios[i].saldo);
+
+        fprintf(arquivo, "%d,%s,%d,%.2f\n", usuarios[i].id, usuarios[i].nome, usuarios[i].idade, usuarios[i].saldo);
     }
 
     fclose(arquivo);
 }
 
+
+
 void carregarusuarios() {
-    FILE *arquivo = fopen("usuarios.txt", "r");
+    setlocale(LC_NUMERIC, ""); // é usado para definir os pontos flutuantes com . ao invez de , do portugues
+    FILE *arquivo;
+    arquivo = fopen("usuarios.txt", "r");
+
     if (arquivo == NULL) {
         printf("Nenhum arquivo de usuários encontrado. Continuando sem carregar dados.\n");
         return;
     }
 
     while (1) {
-        cadastro novo_usuario;
-        if (fscanf(arquivo, "%d, %99[^,], %d, %f\n", &novo_usuario.id, novo_usuario.nome, &novo_usuario.idade, &novo_usuario.saldo) != 4) {
-            break;
+        cadastro temp; // struct temporaria de cadastro
+        if (fscanf(arquivo, "%d,%99[^,],%d,%f", &temp.id, temp.nome, &temp.idade, &temp.saldo) != 4) {
+            break; // Sai do loop se a leitura falhar
         }
 
-        cadastro* novo_usuarios = realloc(usuarios, (cont_usuarios + 1) * sizeof(cadastro));
-        if (novo_usuarios == NULL) {
+        usuarios = realloc(usuarios, (cont_usuarios + 1) * sizeof(cadastro)); // aloca memória para mais um usuário
+        if (usuarios == NULL) {
             fprintf(stderr, "Erro ao alocar memória.\n");
             exit(1);
         }
-        usuarios = novo_usuarios;
 
-        usuarios[cont_usuarios] = novo_usuario;
+        usuarios[cont_usuarios] = temp; // copia a struct temporaria para o ponteiro geral
 
-        if (novo_usuario.id >= prox_id) {
-            prox_id = novo_usuario.id + 1;
+        if (temp.id >= prox_id) {
+            prox_id = temp.id + 1; // aumenta o id
         }
-        cont_usuarios++;
+        cont_usuarios++; // incrementa o contador de usuários
     }
 
     fclose(arquivo);
@@ -184,12 +205,13 @@ void carregarusuarios() {
 
 void menu() {
     int opc;
-    printf("\n(1) Inserção de um novo usuário.\n(2) Inserção de varios usuários.\n(3) Busca de usuário por id.\n(4) Transferência entre usuários.\n(5) Remoção de um usuário.\n(6) Sair.\n\n");
+    printf("\n(1) Inserção de um novo usuário.\n(2) Inserção de varios usuários.\n(3) Busca de usuário por id.\n(4) Transferência entre usuários.\n(5)Remoção de um usuário.\n(6) Sair.\n\n");
 
     printf("Por favor, selecione a opção desejada: ");
     scanf("%d", &opc);
 
     switch (opc) {
+
         case 1:
             printf("\nOpção 1 selecionada: Inserção de um novo usuário.\n");
             insercaounica();
@@ -200,16 +222,18 @@ void menu() {
             insercaovarios();
             break;
 
-        case 3: {
+        case 3:
+            {
             int id;
             printf("\nOpção 3 selecionada: Busca de usuário por id.\n");
             printf("Digite o ID do usuário que deseja buscar: ");
             scanf("%d", &id);
-            cadastro* encontrado = buscarid(id);
-            if (encontrado != NULL) {
+            cadastro* encontrado = buscarid(id); // cria um um ponteiro para a localização daquela struct
+            if (encontrado != NULL){
                 printf("\nUsuário encontrado:\n");
-                printf("%d, %s, %d, %.2f\n", encontrado->id, encontrado->nome, encontrado->idade, encontrado->saldo);
-            } else {
+                printf("%d, %s, %d, %.2f", encontrado->id, encontrado->nome, encontrado->idade, encontrado->saldo);
+            }
+            else {
                 printf("\nUsuário com ID %d não encontrado.\n", id);
             }
             break;
@@ -220,20 +244,19 @@ void menu() {
             transferencia();
             break;
 
-        case 5: {
-            int id;
+        case 5:
             printf("\nOpção 5 selecionada: Remoção de um usuário.\n");
+            int id;
             printf("Digite o ID do usuário que deseja remover: ");
             scanf("%d", &id);
             remocao(id);
             break;
-        }
 
         case 6:
-            printf("\nSaindo...\nObrigado por utilizar o UaiBank!!!\n");
-            salvarusuarios();
-            free(usuarios);
+            printf("\nSaindo...");
+            printf("\nObrigado por utilizar o UaiBank!!!\n");
             exit(0);
+            break;
 
         default:
             printf("\nOpção inválida.\n");
@@ -242,18 +265,21 @@ void menu() {
 }
 
 int main() {
-    carregarusuarios();
+
+    carregarusuarios(); // inicia carregando todos os usuarios
+    int opc = 0;
+    setlocale(LC_ALL, "Portuguese");
+
     printf("Seja bem-vindo(a) ao UaiBank!\n");
 
-    int opc;
     do {
         menu();
         printf("\nDeseja realizar outra ação? 1 [SIM] 2 [NÃO]\n");
         scanf("%d", &opc);
-    } while (opc == 1);
 
+    } while (opc==1);
     printf("\nObrigado por utilizar o UaiBank!!!\n");
     salvarusuarios();
-    free(usuarios);
+    free(usuarios); // libera a memória alocada
     return 0;
 }
