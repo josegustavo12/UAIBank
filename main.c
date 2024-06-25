@@ -44,6 +44,7 @@ void insercaounica() {
 
     cont_usuarios++; //adicionando um a contagem de usuários
     prox_id++; //adicionando um ao ID do próximo usuário
+    printf("\nUsuário inserido com sucesso\n");
 }
 
 void insercaovarios() {
