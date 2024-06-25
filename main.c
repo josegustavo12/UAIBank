@@ -74,7 +74,7 @@ void transferencia() {
 
     do {
         printf("\n\nDigite o Id de origem, o Id de Destino e a quantia que deseja transferir:\n");
-        scanf("%d %d %f", &t.id_origem, &t.id_destino, &t.quantia); //armazenando o Id de Origem digitado na varíavel da struct de transferência
+        scanf("%d, %d, %f", &t.id_origem, &t.id_destino, &t.quantia); //armazenando o Id de Origem digitado na varíavel da struct de transferência
 
         cadastro* origem = buscarid(t.id_origem); //declarando e inicializando a variável "origem" ao chamar a função para ver se o Id informado de fato existe
 
@@ -270,10 +270,12 @@ int nova(){
     else if(opc==2){
         printf("\nObrigado por utilizar o UaiBank!!!\n");
         printf("Saindo...\n");
+        salvarusuarios();
+        free(usuarios);
         exit(0);
     }
     else{
-        printf("\nOpcao invalida.\n");
+        printf("\nOpção inválida.\n");
         opc=nova();
     }
 }
@@ -291,7 +293,7 @@ int main() {
         menu();
         opc=nova();
         if(opc!=2 && opc!=1){
-            printf("\nOpcao invalida.\n");
+            printf("\nOpção inválida.\n");
             opc=nova();
         }
     } while (opc==1);
