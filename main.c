@@ -140,10 +140,6 @@ void remocao(int id){
 
         usuarios = realloc(usuarios, cont_usuarios * sizeof(cadastro));
 
-        if (usuarios == NULL) {
-            fprintf(stderr, "\nErro ao realocar memória.\n");
-            exit(1);
-        }
         printf("\nUsuário removido com sucesso.\n");
     }
     else {
@@ -264,6 +260,25 @@ void menu() {
     }
 }
 
+int nova(){
+    int opc;
+    printf("\nDeseja realizar outra ação? 1 [SIM] 2 [NÃO]\n");
+    scanf("%d", &opc);
+    if(opc==1){
+        return 1;
+    }
+    else if(opc==2){
+        printf("\nObrigado por utilizar o UaiBank!!!\n");
+        printf("Saindo...\n");
+        exit(0);
+    }
+    else{
+        printf("\nOpcao invalida.\n");
+        opc=nova();
+    }
+}
+
+
 int main() {
 
     carregarusuarios(); // inicia carregando todos os usuarios
@@ -272,11 +287,13 @@ int main() {
 
     printf("Seja bem-vindo(a) ao UaiBank!\n");
 
-    do {
+    do{
         menu();
-        printf("\nDeseja realizar outra ação? 1 [SIM] 2 [NÃO]\n");
-        scanf("%d", &opc);
-
+        opc=nova();
+        if(opc!=2 && opc!=1){
+            printf("\nOpcao invalida.\n");
+            opc=nova();
+        }
     } while (opc==1);
     printf("\nObrigado por utilizar o UaiBank!!!\n");
     salvarusuarios();
